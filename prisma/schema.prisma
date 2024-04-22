@@ -1,0 +1,49 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// npx prisma migrate dev
+// npx prisma studio
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(uuid())
+  email     String    @unique
+  name      String
+  password  String
+  createdAt DateTime  @default(now())
+  CheckIn   CheckIn[]
+
+  @@map("users")
+}
+
+model CheckIn {
+  id          String    @id @default(uuid())
+  date        DateTime  @default(now())
+  validatedAt DateTime?
+  user        User      @relation(fields: [userId], references: [id])
+  userId      String
+  gym         Gym       @relation(fields: [gymId], references: [id])
+  gymId       String
+
+  @@map("checkIns")
+}
+
+model Gym {
+  id          String    @id @default(uuid())
+  name        String
+  description String?
+  phone       String?
+  latitude    Decimal
+  longitude   Decimal
+  CheckIn     CheckIn[]
+
+  @@map("gyms")
+}

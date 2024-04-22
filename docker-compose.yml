@@ -1,0 +1,16 @@
+version: '3'
+services:
+  postgresql:
+    image: 'bitnami/postgresql:latest'
+    container_name: gympass-postgresql
+    environment:
+      - POSTGRESQL_USERNAME=docker
+      - POSTGRESQL_PASSWORD=docker
+      - POSTGRESQL_DATABASE=gympass
+    volumes:
+      - '/bitnami/postgresql'
+      - '/docker-entrypoint-initdb.d'
+      - '/docker-entrypoint-preinitdb.d'
+    ports:
+      - '5432:5432'
+  
